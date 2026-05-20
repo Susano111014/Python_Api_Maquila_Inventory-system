@@ -1,0 +1,8 @@
+# Python cache
+__pycache__/
+*.py[cod]
+# Virtual env (if local venv in repo)
+venv/
+.venv/
+# IDE
+.idea/
