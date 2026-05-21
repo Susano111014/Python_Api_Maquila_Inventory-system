@@ -84,3 +84,18 @@ class Test(TestCase):
 
         assert len(stock) == 1
         assert stock[0]["Artículo"] == "VALID ITEM"
+
+    def test_upload_file_skips_rows_with_empty_tags(self):
+        df = pd.DataFrame( [
+                    {
+                        "Artículo": "ITEM 1",
+                        "Código de barras": "00123-45 6",
+                    }
+                ]
+        )
+        buffer = BytesIO()
+        with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
+            df.to_excel(writer, index=False)
+        validated_stock = service_stock.upload_file(buffer.getvalue())
+        assert len(validated_stock) == 1
+        assert not (validated_stock[0]["Tags"])
